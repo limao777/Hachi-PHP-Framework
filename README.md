@@ -119,6 +119,8 @@ METHOD: getQuery()
 
 array，如果get、post有相同的参数，post覆盖get
 
+-----
+
 ### 获取get参数
 METHOD: (后续添加)
 
@@ -126,12 +128,16 @@ METHOD: (后续添加)
 
 array
 
+-----
+
 ### 获取post参数
 METHOD: (后续添加)
 
 返回值
 
 array
+
+-----
 
 ### 设置cookie
 METHOD: setCookie(string key, string value="", long expire=0, string path="/", string domain="", bool secure=false, bool httponly=false)
@@ -150,6 +156,8 @@ METHOD: setCookie(string key, string value="", long expire=0, string path="/", s
 
 1
 
+-----
+
 ### 获取cookie
 METHOD:  getCookie(string key)
 
@@ -160,6 +168,8 @@ METHOD:  getCookie(string key)
 返回值
 
 string
+
+-----
 
 ### 跳转
 METHOD:  redirect(string uri, int status_code = 302)
@@ -173,12 +183,16 @@ METHOD:  redirect(string uri, int status_code = 302)
 
 0
 
+-----
+
 ### 获取HTTP header信息
 METHOD:  getHeader()
 
 返回值
 
 array，返回值兼容swoole写法，全部小写，"_"转“-”，自定义参数去除了HTTP前缀
+
+-----
 
 ### 设置HTTP header
 METHOD:  setHeader(string key, string value)
@@ -192,12 +206,16 @@ METHOD:  setHeader(string key, string value)
 
 1
 
+-----
+
 ### 获取HTTP原生的body
 METHOD:  getRawContent()
 
 返回值
 
 string
+
+-----
 
 ### 获取HTTP文件
 METHOD:  getFiles()
