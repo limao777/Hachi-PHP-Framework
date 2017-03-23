@@ -27,7 +27,6 @@
 
 ## 使用说明
 ### 传统模式
-需要安装doc目录下的扩展，phpize、./configure、make、makeinstall
 传统模式下无任何禁忌，就像开发普通php一样，当然，推荐使用集成的方式处理get/post数据、cookies、header等，这样以后需要使用app模式部署基本不用改代码
 ### app模式
 不能使用die()、exit等直接结束程序的方法，而应该使用集成的end方法代替
@@ -35,6 +34,7 @@
 传统的$_GET、setcookie等方法将失效，应该使用集成的方法代替
 
 ## 传统方式部署：
+需要安装doc目录下的扩展，phpize、./configure、make、makeinstall
 ### Nginx示例：
 ```
 server{
