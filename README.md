@@ -1,16 +1,19 @@
 # Hachi-PHP-Framework
 基于PHP扩展和PHP做的web框架，支持接入swoole以及传统的LAMP/LNMP架构，支持PHP5.5+、PHP7+
 
+## 当前进度
+完成了app方式部署的基本架构，接下来完成基于传统方式部署的架构
+
 ## 特性
 使用了超级变量，HTTP协议相关的数据全部可以使用它
 
 集成了get/post参数获取、cookies、HTTP header、HTTP raw body、跳转等方法。在不使用swoole的定时器、任务等功能时，app部署方式与传统部署方式可以无缝转换
 
-以app方式部署性能超级高
+以app方式部署性能超级高，支持swoole所有特性，如定时器、任务等、协程等功能
 
-+缓存处理，支持memcached以及redis
++缓存处理封装
 
-+SQL型数据库orm，支持mysql、postgres
++SQL型数据库orm
 
 +表单验证表达式，预留支持多语言方法
 
@@ -20,9 +23,9 @@
 
 +smarty
 
-符合psr0风格的路由风格，轻松扩展其他组件，感觉支持psr4完全暂时没必要
+符合psr0的路由风格，轻松扩展其他组件，感觉支持psr4完全暂时没必要
 
-## 使用禁忌
+## 使用说明
 ### 传统模式
 传统模式下无任何禁忌，就像开发普通php一样，当然，推荐使用集成的方式处理get/post数据、cookies、header等，这样以后需要使用app模式部署基本不用改代码
 ### app模式
@@ -114,6 +117,91 @@ METHOD: getQuery()
 
 返回值
 
+array，如果get、post有相同的参数，post覆盖get
+
+### 获取get参数
+METHOD: (后续添加)
+
+返回值
+
 array
 
-### 待补全
+### 获取post参数
+METHOD: (后续添加)
+
+返回值
+
+array
+
+### 设置cookie
+METHOD: setCookie(string key, string value="", long expire=0, string path="/", string domain="", bool secure=false, bool httponly=false)
+
+| 参数名称  | 说明 |
+| ------------- | :-----: |
+| key  | cookie的key |
+| value  | cookie的值 |
+| expire  | 设置时长，秒，默认为session |
+| path  | cookie的path |
+| domain  | cookie的域 |
+| secure  | 是否启用安全策略 |
+| httponly  | 是否httponly |
+
+返回值
+
+1
+
+### 获取cookie
+METHOD:  getCookie(string key)
+
+| 参数名称  | 说明 |
+| ------------- | :-----: |
+| key  | cookie的key |
+
+返回值
+
+string
+
+### 跳转
+METHOD:  redirect(string uri, int status_code = 302)
+
+| 参数名称  | 说明 |
+| ------------- | :-----: |
+| uri  | 跳转的地址 |
+| status_code  | HTTP的code 301/302等s |
+
+返回值
+
+0
+
+### 获取HTTP header信息
+METHOD:  getHeader()
+
+返回值
+
+array，返回值兼容swoole写法，全部小写，"_"转“-”，自定义参数去除了HTTP前缀
+
+### 设置HTTP header
+METHOD:  setHeader(string key, string value)
+
+| 参数名称  | 说明 |
+| ------------- | :-----: |
+| key  | key |
+| value  | value |
+
+返回值
+
+1
+
+### 获取HTTP原生的body
+METHOD:  getRawContent()
+
+返回值
+
+string
+
+### 获取HTTP文件
+METHOD:  getFiles()
+
+返回值
+
+array，同$_FILES

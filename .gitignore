@@ -1,0 +1,13 @@
+﻿.gitignore
+.htaccess
+.tags
+.tags_sorted_by_file
+.DS_Store
+_codesync
+.idea
+.vscode
+.idea/*
+.project
+.settings
+.buildpath
+.settings/*
