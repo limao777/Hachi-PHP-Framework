@@ -18,7 +18,7 @@ class CgiServer
 
     public function CHttpServer()
     {
-        $http = new swoole_http_server("0.0.0.0", empty(Config::get("Server.http_port"))?10080:Config::get("Server.http_port"));
+        $http = new swoole_http_server("0.0.0.0", empty(Config::get("Server.http_port")) ? 10080 : Config::get("Server.http_port"));
         $http->set(array(
             'worker_num' => 16,
             'daemonize' => true,
@@ -26,8 +26,8 @@ class CgiServer
             'dispatch_mode' => 1,
             'log_file' => SERVERLOGFILE,
             'log_level' => 2
-        )) // 小于INFO不打印日志
-;
+        )); // 小于INFO不打印日志
+
         
         $http->on('Start', array(
             $this,
@@ -54,7 +54,11 @@ class CgiServer
                     $use_controller = $route_uri['controller'];
                     $this->f['controller'] = new $use_controller($this->f['ctx']);
                     $use_action = $route_uri['action'];
-                    $this->f['controller']->$use_action();
+                    if (method_exists($this->f['controller'], $use_action)) {
+                        $this->f['controller']->$use_action();
+                    } else {
+                        echo 'no this action';
+                    }
                 } else {
                     echo 'routes error';
                 }
@@ -68,13 +72,11 @@ class CgiServer
             
             $result = ob_get_contents();
             
-            
             $response->end($result);
             
             // 清理所有对象
             foreach ($this->f as $p => $v) {
                 $this->f[$p] = NULL;
-            
             }
             
             ob_end_clean();
