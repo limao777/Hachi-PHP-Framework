@@ -3,6 +3,8 @@ define('ROOTSERVER', realpath(dirname(__FILE__)));
 define('ROOTCONFIG', realpath(dirname(__FILE__)) . '/../conf');
 define('MASTERHTTPPIDFILE', realpath(ROOTSERVER . '/../storage/log') . '/HTTPmasterId');
 define('MANAGERHTTPPIDFILE', realpath(ROOTSERVER . '/../storage/log') . '/HTTPmanagerId');
+define('MASTERWEBSOCKETPIDFILE', realpath(ROOTSERVER . '/../storage/log') . '/WEBSOCKETmasterId');
+define('MANAGERWEBSOCKETPIDFILE', realpath(ROOTSERVER . '/../storage/log') . '/WEBSOCKETmanagerId');
 define('SERVERLOGFILE', realpath(ROOTSERVER . '/../storage/log') . '/serverLog');
 define('WWW', realpath(ROOTSERVER . '/../www'));
 date_default_timezone_set("Asia/Chongqing");

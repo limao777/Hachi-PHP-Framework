@@ -16,7 +16,12 @@ class CgiServer
     public function __construct()
     {}
 
-    public function CHttpServer()
+    public function WebsocketServer()
+    {
+        echo '需要再写，格式是一样的';
+    }
+
+    public function HttpServer()
     {
         $http = new swoole_http_server("0.0.0.0", empty(Config::get("Server.http_port")) ? 10080 : Config::get("Server.http_port"));
         $http->set(array(
@@ -25,9 +30,9 @@ class CgiServer
             'max_request' => 10000,
             'dispatch_mode' => 1,
             'log_file' => SERVERLOGFILE,
-            'log_level' => 2
+            'log_level' => 2,
+            'task_worker_num' => 100
         )); // 小于INFO不打印日志
-
         
         $http->on('Start', array(
             $this,
@@ -37,8 +42,16 @@ class CgiServer
             $this,
             'onHTTPWorkerStart'
         ));
+        $http->on('Task', array(
+            $this,
+            'onHTTPTask'
+        ));
+        $http->on('Finish', array(
+            $this,
+            'onHTTPFinish'
+        ));
         
-        $http->on('request', function ($request, $response)
+        $http->on('request', function ($request, $response) use($http)
         {
             
             ob_start();
@@ -48,11 +61,11 @@ class CgiServer
                     're_method' => Routes::getRegexRoute()
                 ];
                 $this->f['ctx'] = new \Hachi\Ctx();
-                $route_uri = $this->f['ctx']->init('C', $routes_conf, $request, $response);
+                $route_uri = $this->f['ctx']->initCGI($routes_conf, $request, $response);
                 
                 if ($route_uri['code'] === 0) {
                     $use_controller = $route_uri['controller'];
-                    $this->f['controller'] = new $use_controller($this->f['ctx']);
+                    $this->f['controller'] = new $use_controller($this->f['ctx'], $http);
                     $use_action = $route_uri['action'];
                     if (method_exists($this->f['controller'], $use_action)) {
                         $this->f['controller']->$use_action();
@@ -69,7 +82,6 @@ class CgiServer
                     var_dump($e);
                 }
             }
-            
             $result = ob_get_contents();
             
             $response->end($result);
@@ -92,9 +104,39 @@ class CgiServer
         echo 'HTTP running' . PHP_EOL;
     }
 
-    public function onHTTPWorkerStart()
+    public function onHTTPWorkerStart($http, $id)
     {
         require_once ROOTSERVER . '/Logging.php';
+        
+        //定时器
+        $http->tick(2000, function () use($http, $id)
+        {
+            // var_dump($id);
+        });
+    }
+
+    public function onHTTPTask($http, $task_id, $worker_id, $data)
+    {
+        $ret = 0;
+        try {
+            $task_class = $data['class'];
+            $task_method = $data['method'];
+            $task = new $task_class($data);
+            $ret = $task->$task_method();
+            $task = NULL;
+        } catch (Exception $e) {
+            $task = NULL;
+            if (! empty($e->getMessage())) {
+                $ret = $e->getMessage();
+            }
+        } finally {
+            return $ret;
+        }
+    }
+
+    public function onHTTPFinish($http, $task_id, $task_return_data)
+    {
+        return $task_return_data;
     }
 
     public static function getInstance()
