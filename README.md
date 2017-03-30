@@ -43,7 +43,7 @@ listen 80;
  
     charset utf-8;
 
-  root   /web/hachi/server;
+  root   /web/hachi/public;
 
 
     location / {
@@ -98,6 +98,8 @@ php app.php stop
 
 ## 已知问题
 app方式部署使用smarty可能会产生内存溢出
+
+不支持windows
 
 ## 超级变量功能列表
 ### 结束当前会话
@@ -178,7 +180,7 @@ METHOD:  redirect(string uri, int status_code = 302)
 | 参数名称  | 说明 |
 | ------------- | :-----: |
 | uri  | 跳转的地址 |
-| status_code  | HTTP的code 301/302等s |
+| status_code  | HTTP的code 301/302等 |
 
 返回值
 
