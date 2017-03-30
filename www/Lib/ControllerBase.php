@@ -10,7 +10,7 @@ class Lib_ControllerBase
 
     protected $_data;
 
-    public function init($ctx, $sw)
+    public function init($ctx, $sw = NULL)
     {
         $this->ctx = $ctx;
         $this->sw = $sw;

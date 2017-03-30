@@ -3,7 +3,7 @@
 class Controllers_Test extends Controllers_BaseController
 {
 
-    public function __construct($ctx, $sw)
+    public function __construct($ctx, $sw = NULL)
     {
         parent::init($ctx, $sw);
         
