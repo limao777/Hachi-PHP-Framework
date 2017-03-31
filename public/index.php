@@ -30,7 +30,7 @@ $routes_conf = [
     're_method' => Routes::getRegexRoute(),
 ];
 $ctx = new \Hachi\Ctx();
-$route_uri = $ctx->initFPM($routes_conf, $_SERVER['REQUEST_URI']);
+$route_uri = $ctx->initFPM($routes_conf);
 
 if ($route_uri['code'] === 0) {
     $use_controller = $route_uri['controller'];

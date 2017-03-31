@@ -125,7 +125,7 @@ array，如果get、post有相同的参数，post覆盖get
 -----
 
 ### 获取get参数
-METHOD: (后续添加)
+METHOD: getQueryGet()
 
 返回值
 
@@ -134,11 +134,20 @@ array
 -----
 
 ### 获取post参数
-METHOD: (后续添加)
+METHOD: getQueryPost()
 
 返回值
 
 array
+
+-----
+
+### 获取route group参数
+METHOD: getRouteGroup()
+
+返回值
+
+string
 
 -----
 
