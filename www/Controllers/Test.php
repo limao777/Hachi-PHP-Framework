@@ -52,8 +52,28 @@ class Controllers_Test extends Controllers_BaseController
 
     public function cache()
     {
+           //redis
+        $cache = Lib_Cache_Redis::getInstance();
+        
+        echo 'redis set、get:<br />';
+        $cache->setex('re', 1, 'redis');
+        var_dump($cache->get('re'));
+        sleep(2);
+        var_dump($cache->get('re'));
+        
+        echo '<br /><br />redis list:<br />';
+        $cache->lPush('list', '1');
+        $cache->lPush('list', '2');
+        $cache->lPush('list', 3);
+        $cache->lPush('list', '4');
+        
+        var_dump($cache->lPop('list'));
+        var_dump($cache->rPop('list'));
+        var_dump($cache->lPop('list'));
+        var_dump($cache->lPop('list'));
         
         // memcached
+        echo '<br /><br />memcahed set、get:<br />';
         $cache = Lib_Cache_Memcached::getInstance();
         $cache->set('a', 'b', 2);
         $c = $cache->get('a');

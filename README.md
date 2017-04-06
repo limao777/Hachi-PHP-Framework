@@ -103,7 +103,9 @@ php app.php stop
 ## 已知问题
 app方式部署使用smarty可能会产生内存溢出
 
-不支持windows
+不支持windows（windows可以用docker）
+
+app方式部署如果在较大并发下出现连接数问题，可以将ulimit改为65535
 
 ## 超级变量功能列表
 ### 结束当前会话
