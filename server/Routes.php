@@ -12,7 +12,8 @@ class Routes{
     ];
     
     private static $route_group = [
-        'admin/www' => 'admin/www'
+        'admin/www' => 'admin/www',
+	    'en' => 'en_US'
     ];
     
     public static function getGroup(){
