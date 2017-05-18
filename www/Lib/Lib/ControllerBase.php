@@ -29,7 +29,7 @@ class Lib_ControllerBase
 
     protected function _initSmarty()
     {
-        require_once __DIR__ . '/Smarty/Smarty.class.php';
+        require_once __DIR__ . '/../Smarty/Smarty.class.php';
         $this->_smarty = new Smarty();
         $smarty_path = realpath(ROOTSERVER . '/../storage/smarty');
         $this->_smarty->setTemplateDir($smarty_path . '/templates/');
