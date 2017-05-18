@@ -23,6 +23,11 @@ class Controllers_Test extends Controllers_BaseController
         phpinfo();
     }
 
+    public function ip()
+    {
+        var_dump($this->ctx->getClientIp());
+    }
+    
     public function index()
     {
         $fv = new Lib_FormValidation($this->_form_validation_rule, $this->ctx->getQuery());
@@ -33,7 +38,32 @@ class Controllers_Test extends Controllers_BaseController
         
         echo '表单验证通过';
     }
-
+    
+    public function config()
+    {
+    
+        var_dump(Config::get('FILE'));
+    }
+    
+    public function query()
+    {
+        var_dump($this->ctx->getquery());
+        var_dump($this->ctx->query);
+    }
+    
+    public function routegroup()
+    {
+        var_dump($this->ctx->getRouteGroup());
+    }
+    
+    
+    public function url()
+    {
+        var_dump($this->ctx->geturl());
+        var_dump($this->ctx->getController());
+        var_dump($this->ctx->getAction());
+    }
+    
     public function db()
     {
         $a = Model_Admin::getInstance();
@@ -52,7 +82,8 @@ class Controllers_Test extends Controllers_BaseController
 
     public function cache()
     {
-           //redis
+        
+        //redis
         $cache = Lib_Cache_Redis::getInstance();
         
         echo 'redis set、get:<br />';
@@ -119,9 +150,9 @@ class Controllers_Test extends Controllers_BaseController
 
     public function http()
     {
-        $httpclient = new Swoole\Coroutine\Http\Client('1.2.3.4', 80);
+        $httpclient = new Swoole\Coroutine\Http\Client('172.19.3.65', 80);
         $httpclient->setHeaders([
-            'Host' => "www.bing.com",
+            'Host' => "www.onenetv3.com",
             "User-Agent" => 'Chrome/49.0.2587.3',
             'Accept' => 'text/html,application/xhtml+xml,application/xml',
             'Accept-Encoding' => 'gzip'

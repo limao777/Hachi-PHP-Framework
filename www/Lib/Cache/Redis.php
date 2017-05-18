@@ -5,7 +5,7 @@
  * @author limao (limao777@126.com)
  * @date 2017
  */
-class Lib_Cache_Redis
+class Cache_Redis
 {
     protected static $instance;
     protected $_redis;
@@ -19,7 +19,7 @@ class Lib_Cache_Redis
     public static function getInstance()
     {
         if (! self::$instance) {
-            self::$instance = new self('Redis');
+            self::$instance = new self('redis');
         }
         return self::$instance;
     }

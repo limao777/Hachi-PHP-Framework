@@ -2,7 +2,7 @@
 /**
  * 区别于SqlMake,专门方便PDO进行bindalue的
  */
-class Lib_Model_PDOPgsqlMaker
+class Model_PDOPgsqlMaker
 {
     const RAW_STR_PREFIX = '&/';
     

@@ -1,19 +1,30 @@
 <?php
-
+/**
+ * 
+ * @filesource 
+ * @author limao (limao777@126.com)
+ * @date 2017
+ */
 class Lib_ControllerBase
 {
 
     public $ctx;
+
     public $sw;
 
     protected $_smarty;
 
     protected $_data;
 
-    public function init($ctx, $sw = NULL)
+    protected $_curl_back_error = '';
+
+    public function init($ctx, $sw)
     {
         $this->ctx = $ctx;
         $this->sw = $sw;
+        $ctx->setHeader('Server', 'CMCC');
+        $ctx->setHeader('X-Powered-By', 'CMCC IOTeam/Hachi');
+        $ctx->setHeader('Content-type', 'text/html;charset=utf-8');
     }
 
     protected function _initSmarty()
@@ -78,8 +89,38 @@ class Lib_ControllerBase
             $ret = htmlspecialchars($ret);
             $ret = str_replace("&quot;", '"', $ret);
         }
-        
         $this->_end($ret);
+    }
+
+    protected function _curlBack($url_conf_base, $url, $params, $method)
+    {
+        $exec_time = microtime(TRUE);
+        
+        $url_conf_base = 'back.' . $url_conf_base;
+        $url = ltrim($url, '/');
+        $url = Config::get($url_conf_base) . '/' . $url;
+        if (strtoupper($method) == 'GET' && ! empty($params)) {
+            $params = http_build_query($params);
+            $url = $url . '?' . $params;
+        }
+        $ret = F::$f->Lib_Http($this->ctx)->curl($url, $params, $method);
+        $ret = json_decode($ret, TRUE);
+        if ($ret['errno'] == 0) {
+            return $ret['data'];
+        } else {
+            if (! empty($ret['error'])) {
+                $this->_curl_back_error = $ret['error'];
+                return FALSE;
+            } else {
+                $this->_curl_back_error = gettext('后端请求错误');
+                return FALSE;
+            }
+        }
+    }
+
+    protected function _getCurlBackError()
+    {
+        return $this->_curl_back_error;
     }
 
     protected function _end($msg)

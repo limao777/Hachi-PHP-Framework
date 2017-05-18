@@ -3,7 +3,7 @@
 /**
  * 数据库模型基类
  */
-class Lib_Model_Pgdb
+class Model_Pgdb
 {
     protected static $_forceReadOnMaster = FALSE;
 
@@ -29,7 +29,7 @@ class Lib_Model_Pgdb
         $this->_table = $table;
         $this->_debug = $debug;
         $this->_db_zone_name = $db_zone_name;
-        $this->_sql_maker = Lib_Model_PDOPgsqlMaker::getInstance();
+        $this->_sql_maker = Model_PDOPgsqlMaker::getInstance();
         $this->_data_type = $data_type;
     }
 

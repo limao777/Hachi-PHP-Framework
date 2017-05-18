@@ -5,7 +5,7 @@
  * @author limao (limao777@126.com)
  * @date 2017
  */
-class Lib_Cache_Memcached
+class Cache_Memcached
 {
     protected static $instance;
     protected $_memcache;
@@ -20,7 +20,7 @@ class Lib_Cache_Memcached
     {
     
         if (! self::$instance) {
-            self::$instance = new self('Memcached');
+            self::$instance = new self('memcached');
         }
         return self::$instance;
     }

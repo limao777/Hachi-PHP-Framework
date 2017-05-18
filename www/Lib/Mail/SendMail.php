@@ -2,7 +2,7 @@
 /**
  * 发送邮件
  */
-class Lib_Mail_SendMail
+class Mail_SendMail
 {
 
 	public static function sendmail($to, $from, $fromdesc, $subject, $plaintext, $content) {
