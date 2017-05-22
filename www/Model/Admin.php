@@ -1,5 +1,5 @@
 <?php
-class Model_Admin extends Lib_Model_Pgdb
+class Model_Admin extends Model_Pgdb
 {
     
     private static $instance;
