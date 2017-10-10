@@ -281,31 +281,31 @@ string
 ## APP方式部署的一些新特性
 ### 定时任务
 cgiserver.php的onHTTPWorkerStart方法中添加：
-···text
+```text
    $http->tick(2000, function () use($http, $id)
         {
                 // timer logic
         });
-···
+```
 其中2000是定时器毫秒数，如果定时器执行时间大于2000ms，则下次不会触发定时器，待当前定时器结束后再触发
 
 其中id是与该文件worker_num对应，该值设置的多少id就相应的有多少。
 
 如果只使用一个定时器通常这样做：
-···text
+```text
    $http->tick(2000, function () use($http, $id)
         {
             if ($id === 0) {    //这里将id固定，则其他定时器将被丢弃
                 // timer logic
             }
         });
-···
+```
 
 -----
 
 ### 异步任务&同步任务
 cgiserver.php的class中添加：
-···text
+```text
     public function onHTTPTask($http, $task_id, $worker_id, $data)
     {
         //do something
@@ -316,14 +316,14 @@ cgiserver.php的class中添加：
     {
         return $task_return_data;
     }
-···
+```
 异步调用：
-···text
+```text
 $http->task("some data");
-···
+```
 同步调用：
-···text
+```text
 $http->taskwait(mixed $data, float $timeout = 0.5, int $dstWorkerId = -1)  : string | bool;
-···
+```
 
 -----
