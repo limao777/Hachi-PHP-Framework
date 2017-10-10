@@ -103,7 +103,7 @@ php app.php stop
 ## 已知问题
 app方式部署使用smarty可能会产生内存溢出
 
-不支持windows（windows可以用docker）
+app部署方式不支持windows（windows可以用docker）
 
 app方式部署如果在较大并发下出现连接数问题，可以将ulimit改为65535
 
@@ -122,7 +122,7 @@ METHOD: end(string msg)
 -----
 
 ### 获取get+post参数
-METHOD: getQuery()
+METHOD: getQuery()或直接取值query
 
 返回值
 
@@ -131,7 +131,7 @@ array，如果get、post有相同的参数，post覆盖get
 -----
 
 ### 获取get参数
-METHOD: getQueryGet()
+METHOD: getQueryGet()或直接取值queryget
 
 返回值
 
@@ -140,7 +140,7 @@ array
 -----
 
 ### 获取post参数
-METHOD: getQueryPost()
+METHOD: getQueryPost()或直接取值querypost
 
 返回值
 
@@ -241,3 +241,89 @@ METHOD:  getFiles()
 返回值
 
 array，同$_FILES
+
+### 获取客户端IP
+METHOD:  getClientIp()
+
+返回值
+
+string
+
+-----
+
+### 获取当前url
+METHOD:  geturl()
+
+返回值
+
+string
+
+-----
+
+### 获取当前控制器名称
+METHOD:  getController()
+
+返回值
+
+string
+
+-----
+
+### 获取当前方法名称
+METHOD:  getAction()
+
+返回值
+
+string
+
+-----
+
+## APP方式部署的一些新特性
+### 定时任务
+cgiserver.php的onHTTPWorkerStart方法中添加：
+···text
+   $http->tick(2000, function () use($http, $id)
+        {
+                // timer logic
+        });
+···
+其中2000是定时器毫秒数，如果定时器执行时间大于2000ms，则下次不会触发定时器，待当前定时器结束后再触发
+
+其中id是与该文件worker_num对应，该值设置的多少id就相应的有多少。
+
+如果只使用一个定时器通常这样做：
+···text
+   $http->tick(2000, function () use($http, $id)
+        {
+            if ($id === 0) {    //这里将id固定，则其他定时器将被丢弃
+                // timer logic
+            }
+        });
+···
+
+-----
+
+### 异步任务&同步任务
+cgiserver.php的class中添加：
+···text
+    public function onHTTPTask($http, $task_id, $worker_id, $data)
+    {
+        //do something
+	return $task_return_data;
+    }
+
+    public function onHTTPFinish($http, $task_id, $task_return_data)
+    {
+        return $task_return_data;
+    }
+···
+异步调用：
+···text
+$http->task("some data");
+···
+同步调用：
+···text
+$http->taskwait(mixed $data, float $timeout = 0.5, int $dstWorkerId = -1)  : string | bool;
+···
+
+-----
