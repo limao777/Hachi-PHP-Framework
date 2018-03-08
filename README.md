@@ -242,6 +242,8 @@ METHOD:  getFiles()
 
 array，同$_FILES
 
+-----
+
 ### 获取客户端IP
 METHOD:  getClientIp()
 
